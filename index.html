@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Scroller</title>
+    <style type="text/css">
+    body{
+        background-image:url("assets/gray_jean.png"); 
+        color:  #FFC0CB;
+    }
+    #scroller {
+       position:absolute;
+       top:50%;
+       left:50%;
+       padding:15px;
+       -ms-transform: translateX(-50%) translateY(-50%);
+       -webkit-transform: translate(-50%,-50%);
+       transform: translate(-50%,-50%);
+   }
+   #scroller .innerScrollArea {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+#scroller ul {
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+#scroller li {
+    margin-top:80px;
+    padding: 0;
+    list-style-type: none;
+    position: absolute;
+}
+h1{
+    text-align: center;
+    font-family: 'garamond', serif; 
+    font-size:38px;
+    color:484848;
+}
+</style>
+</head>
+<body>
+    <div id="scroller" style="width: 100%; height: 700px; margin: 0 auto;">
+        <div class="innerScrollArea">
+            <ul>
+                <li><img src="assets/imgs/petiteabeille.png" height="500" /></li>
+                <li><img src="assets/imgs/hipsterhat.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/brooklynbridge.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/michgreenparty.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/tram.jpg" height="500" /></li>
+                <li><img src="assets/imgs/seniorboatcruise.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/lawnchairs.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/wine.jpg" height="500" /></li>
+                <li><img src="assets/imgs/snowmobiling1.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/volcano.jpg" height="500" /></li>
+                <li><img src="assets/imgs/whitney.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/birthdaylove.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/chopin.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/eiffeltower.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/louvre.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/kiss.jpg" height="500" /></li>
+                <li><img src="assets/imgs/parissunset.jpg" height="500" /></li>
+                <li><img src="assets/imgs/hamburg.jpg" height="500" /></li>
+                <li><img src="assets/imgs/dancing.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/photobooth.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/halloween.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/applepicking.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/snorkeling.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/dingwedding.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/stinkface.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/sleepnomore.jpeg" height="500" /></li>
+                <li><img src="assets/imgs/baecoco.jpg" height="500" /></li>
+                <li><img src="assets/imgs/newyears.jpg" height="500" /></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        var scroller = $('#scroller div.innerScrollArea');
+        var scrollerContent = scroller.children('ul');
+        scrollerContent.children().clone().appendTo(scrollerContent);
+        var curX = 0;
+        scrollerContent.children().each(function(){
+            var $this = $(this);
+            $this.css('left', curX);
+            curX += $this.outerWidth(true);
+        });
+        var fullW = curX / 2;
+        var viewportW = scroller.width();
+
+        // Scrolling speed management
+        var controller = {curSpeed:0, fullSpeed:2};
+        var $controller = $(controller);
+        var tweenToNewSpeed = function(newSpeed, duration)
+        {
+            if (duration === undefined)
+                duration = 600;
+            $controller.stop(true).animate({curSpeed:newSpeed}, duration);
+        };
+
+        // Pause on hover
+        scroller.hover(function(){
+            tweenToNewSpeed(0);
+        }, function(){
+            tweenToNewSpeed(controller.fullSpeed);
+        });
+
+        // Scrolling management; start the automatical scrolling
+        var doScroll = function()
+        {
+            var curX = scroller.scrollLeft();
+            var newX = curX + controller.curSpeed;
+            if (newX > fullW*2 - viewportW)
+                newX -= fullW;
+            scroller.scrollLeft(newX);
+        };
+        setInterval(doScroll, 20);
+        tweenToNewSpeed(controller.fullSpeed);
+    });
+</script>
+</body>
+</html>
